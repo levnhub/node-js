@@ -1,0 +1,29 @@
+{
+  "name": "node-js",
+  "version": "1.0.0",
+  "description": "example app",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ma4ine/node-js.git"
+  },
+  "keywords": [
+    "example",
+    "app"
+  ],
+  "author": "Lev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ma4ine/node-js/issues"
+  },
+  "homepage": "https://github.com/ma4ine/node-js#readme"
+}

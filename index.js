@@ -1,109 +1,61 @@
-// Подключение модуля
-var things = require('./things.js');
+var express = require('express');
+var bodyParser = require('body-parser')
 
-console.log(things.some_value);
+var app = express();
 
-console.log(things.array_counter([1, 7, 99, 8, 45, 8]));
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-console.log(things.multiply(5, 8));
+app.set('view engine', 'ejs');
 
-// Обработчик событий
-var events = require('events');
-var myEmit = new events.EventEmitter();
+// Подключение статических файлов, "перелинковка"
+app.use('/public', express.static('public'));
 
-myEmit.on('some_event', function (text) {
-	console.log(text);
-});
-
-myEmit.emit('some_event', 'Обработчик событий сработал!');
-
-// Наследование
-var util = require('util');
-
-var Cars = function (model) {
-	this.model = model;
-}
-
-// Constructor test
-// Cars.model = 123;
-// console.log( Cars.model );
-
-util.inherits(Cars, events.EventEmitter);
-
-var bmw = new Cars('BMW');
-var audi = new Cars('Audi');
-var volvo = new Cars('Volvo');
-
-var cars = [bmw, audi, volvo];
-
-cars.forEach(function (car) {
-	car.on('speed', function (text) {
-		console.log(car.model + " speed is – " + text);
-	});
-});
-
-bmw.emit('speed', '254.5 km');
-volvo.emit('speed', '180 km');
-
-
-// Работа с файлами
-var fs = require('fs');
-
-// Синхронная запись файлов
-// var file_readed = fs.readFileSync('text.txt', 'utf-8');
-// console.log(file_readed);
-// var message = 'Привет мир!\n' + file_readed; 
-// fs.writeFileSync('some_new_file.txt', message);
-
-// Асинхронная запись файлов
-fs.readFile('text.txt', 'utf-8', function (err, data) {
-	console.log(data);
-});
-
-fs.writeFile('some.txt', 'Hi, it is me', function (err, data) {});
-
-console.log('test');
-
-// Удаление файлов
-// fs.unlink('file.txt', function() {});
-// fs.mkdir('new-one', function() {
-// 	fs.writeFile('./new-one/some_new.txt', 'Привет мир!', function () {
-// 		console.log('Все сработало!');
-// 	})
+// app.get('/', function(req,res) {
+//     // res.send('This is home');
+//     res.sendFile(__dirname + '/index.html');
 // });
-// fs.unlink('./new_one/some_new.txt', function() {});
-// fs.rmdir('new-one', function() {});
+
+// app.get('/about', function(req,res) {
+//     // res.send('This is about');
+//     res.sendFile(__dirname + '/about.html');
+// });
+
+// app.get('/news', function(req,res) {
+//     res.send('This is news');
+// });
+
+// Переменные в строку запроса
+// app.get('/news/:id/:name', function(req,res) {
+//     res.send('ID is —' + req.params.id + req.params.name);
+// });
+
+// Работает через шаблонизатор
+app.get('/', function(req,res) {
+	res.render('index');
+});
+
+app.get('/about', function(req,res) {
+	res.render('about');
+});
+
+app.get('/news/:id', function(req,res) {
+	var obj = {
+		title: 'Новость',
+		id: 4,
+		paragraphs: ['Параграф', 'Обычный текст', 'Числа: 2, 4, 6', 99]
+	}
+	console.log(req.query);
+	res.render('news', { newsId: req.params.id, newsParam: 234, obj: obj });
+});
+
+// Принимаем данные из формы
+app.post('/about', urlencodedParser, function(req,res) {
+	if (!req.body) return res.sendStatus(400);
+	// console.log(req.body);
+	res.render('about-success', {data: req.body});
+});
 
 
-// Создание сервера
-// var http = require('http');
-
-// var server = http.createServer(function (req, res) {
-// 	console.log('URL страницы: ' + req.url);
-// 	res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
-// 	res.end('Привет Мир!');
-// })
-
-// server.listen(3000, '127.0.0.1');
-// console.log('Мы отслеживаем порт 3000');
 
 
-// Потоки
-var myReadShort = fs.createReadStream(__dirname + '/article.txt', 'utf-8');
-var myWriteShort = fs.createWriteStream(__dirname + '/news.txt');
-
-myReadShort.on('data', function (chunk) {
-		console.log('Новые данные получены:\n\n\n\n\n\n\n\n' + chunk + '\n\n\n');
-		myWriteShort.write(chunk);
-})
-
-
-
-
-
-
-
-
-
-
-
+app.listen(3000);

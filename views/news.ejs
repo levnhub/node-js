@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Сайт на Node JS</title>
+</head>
+<body>
+	<% include blocks/header.ejs %>
+	<div class="block">
+		<h1>News Page ID = <%= newsId %></h1>
+		<p><%= newsParam %></p>
+		<p><b>Title:</b> <%= obj.title %></p>
+		<p><b>ID:</b> <%= obj.id %></p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum commodi minima, quasi, minus odio reiciendis culpa. Perferendis repudiandae exercitationem autem atque, nam quisquam, nesciunt cupiditate in quibusdam quos iusto perspiciatis.</p>
+		<ul>
+			<% obj.paragraphs.forEach(function(item) { %>
+				<li><%= item %></li>
+			<% }); %> 
+		</ul>
+	</div>
+</body>
+</html>
